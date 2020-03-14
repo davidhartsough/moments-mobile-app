@@ -1,27 +1,20 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { connect } from "react-redux";
 import { fetchPlaces } from "../../../store/actions/places";
-import ListScreen from "../../../components/ListScreen";
+import TabViewList from "../../../components/list/TabViewList";
 
-function Places({ places, getPlaces }) {
-  useEffect(() => {
-    getPlaces();
-  }, [getPlaces]);
-  return (
-    <ListScreen
-      title="Places"
-      type="Place"
-      items={places.data}
-      loading={places.loading}
-    />
-  );
+function Places(props) {
+  return <TabViewList {...props} title="Places" type="Place" />;
 }
 
-const mapDispatchToProps = dispatch => ({
-  getPlaces: () => dispatch(fetchPlaces())
+const mapStateToProps = ({ places: { hasFetched, loading, data } }) => ({
+  hasFetched,
+  loading,
+  data
 });
 
-export default connect(
-  ({ places }) => ({ places }),
-  mapDispatchToProps
-)(Places);
+const mapDispatchToProps = dispatch => ({
+  fetchData: () => dispatch(fetchPlaces())
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Places);

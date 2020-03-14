@@ -9,12 +9,13 @@ const initialState = {
   momentsByMonth: [],
   query: "",
   queryType: "",
-  momentsByQuery: []
+  momentsByQuery: [],
+  momentToEdit: null
 };
 
 const isInMonth = ({ date }, { month }) => date.substr(0, 7) === month;
 
-function getItemType(queryType) {
+function getType(queryType) {
   switch (queryType) {
     case "activity":
       return "activities";
@@ -27,7 +28,7 @@ function getItemType(queryType) {
   }
 }
 const isInQuery = (m, { query, queryType }) =>
-  m[getItemType(queryType)].includes(query);
+  m[getType(queryType)].includes(query);
 
 export default function moments(state = initialState, action) {
   switch (action.type) {
@@ -121,6 +122,13 @@ export default function moments(state = initialState, action) {
         momentsByMonth,
         momentsByQuery,
         loading: false
+      };
+    }
+    case "set_moment_to_edit": {
+      const { momentToEdit } = action.payload;
+      return {
+        ...state,
+        momentToEdit
       };
     }
     default:

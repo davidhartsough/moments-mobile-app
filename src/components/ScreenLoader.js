@@ -12,7 +12,7 @@ export default function ScreenLoader() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#fff",
+    padding: 64,
     justifyContent: "center",
     alignItems: "center"
   }

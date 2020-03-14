@@ -10,12 +10,10 @@ const getPeople = data => ({
   payload: { data }
 });
 
-let hasFetched = false;
-export const fetchPeople = () => dispatch => {
+export const fetchPeople = hasFetched => dispatch => {
   if (hasFetched) return dispatch(setLoading(false));
   dispatch(setLoading());
   return db.fetchPeople().then(data => {
-    hasFetched = true;
     return dispatch(getPeople(data));
   });
 };

@@ -1,43 +1,72 @@
-import React, { useEffect } from "react";
-import { View, Text, Button } from "react-native";
-import { Appbar } from "react-native-paper";
-import { useHistory } from "react-router-native";
+import React from "react";
+import { View, Text, StyleSheet } from "react-native";
+import { Button } from "react-native-paper";
 import { connect } from "react-redux";
 import { logOut } from "../../store/actions/auth";
 import { fetchProfile } from "../../store/actions/profile";
-import ScreenLoader from "../../components/ScreenLoader";
+import HeaderWithBack from "../../components/HeaderWithBack";
+import Fetcher from "../../components/Fetcher";
 
-function Account({ profile, getProfile, logOut }) {
-  const history = useHistory();
-  useEffect(() => {
-    getProfile();
-  }, [getProfile]);
-  const goBack = () => history.goBack();
+function Account({ data, onPress }) {
   return (
-    <View>
-      <Appbar.Header>
-        <Appbar.BackAction onPress={goBack} />
-        <Appbar.Content title="Account" />
-      </Appbar.Header>
-      {profile.loading ? (
-        <ScreenLoader />
-      ) : (
-        <View>
-          <Text>You are currently signed in as:</Text>
-          <Text>The Amazing {profile.data.name}</Text>
-          <Button title="Sign out" onPress={logOut} />
-        </View>
-      )}
+    <View style={styles.container}>
+      <Text style={styles.text}>You are currently signed in as:</Text>
+      <Text style={styles.name}>The Amazing {data.name}</Text>
+      <Button
+        mode="outlined"
+        onPress={onPress}
+        style={styles.button}
+        color="#111"
+        labelStyle={{ fontSize: 16 }}
+      >
+        Sign out
+      </Button>
     </View>
   );
 }
 
-const mapDispatchToProps = dispatch => ({
-  handleClick: () => dispatch(logOut()),
-  getProfile: () => dispatch(fetchProfile())
+function AccountContainer(props) {
+  return (
+    <>
+      <HeaderWithBack title="Account" />
+      <Fetcher {...props}>
+        <Account {...props} />
+      </Fetcher>
+    </>
+  );
+}
+
+const mapStateToProps = ({ profile: { hasFetched, loading, data } }) => ({
+  hasFetched,
+  loading,
+  data
 });
 
-export default connect(
-  ({ profile }) => ({ profile }),
-  mapDispatchToProps
-)(Account);
+const mapDispatchToProps = dispatch => ({
+  onPress: () => dispatch(logOut()),
+  fetchData: () => dispatch(fetchProfile())
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(AccountContainer);
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    padding: 16
+  },
+  text: {
+    fontSize: 16,
+    textAlign: "center",
+    margin: 8
+  },
+  name: {
+    fontSize: 24,
+    fontWeight: "400",
+    textAlign: "center",
+    marginBottom: 24
+  },
+  button: {
+    width: 144,
+    alignSelf: "center"
+  }
+});

@@ -1,21 +1,19 @@
 import React from "react";
-import { View, Text } from "react-native";
-import { Appbar, FAB } from "react-native-paper";
+import { connect } from "react-redux";
 import { useHistory } from "react-router-native";
+import { createMoment } from "../../store/actions/moments";
+import MomentForm from "../../components/form/";
 
-export default function NewMoment() {
+function NewMoment({ saveNewMoment }) {
   const history = useHistory();
-  const goBack = () => history.goBack();
-  return (
-    <View>
-      <Appbar.Header>
-        <Appbar.BackAction onPress={goBack} />
-        <Appbar.Content title="New Moment" />
-      </Appbar.Header>
-      <View>
-        <Text>Create a new moment</Text>
-        <FAB label="Save" icon="check" onPress={goBack} />
-      </View>
-    </View>
-  );
+  function onSave(newMoment) {
+    saveNewMoment(newMoment).then(() => history.push("/"));
+  }
+  return <MomentForm onSave={onSave} />;
 }
+
+const mapDispatchToProps = dispatch => ({
+  saveNewMoment: m => dispatch(createMoment(m))
+});
+
+export default connect(null, mapDispatchToProps)(NewMoment);

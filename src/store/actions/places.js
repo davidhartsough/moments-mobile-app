@@ -10,12 +10,10 @@ const getPlaces = data => ({
   payload: { data }
 });
 
-let hasFetched = false;
-export const fetchPlaces = () => dispatch => {
+export const fetchPlaces = hasFetched => dispatch => {
   if (hasFetched) return dispatch(setLoading(false));
   dispatch(setLoading());
   return db.fetchPlaces().then(data => {
-    hasFetched = true;
     return dispatch(getPlaces(data));
   });
 };

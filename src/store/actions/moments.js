@@ -53,10 +53,9 @@ const create = created => ({
   payload: { created }
 });
 
-export const createMoment = name => dispatch => {
+export const createMoment = newMoment => dispatch => {
   dispatch(setLoading());
-  const created = { name, count: 1 };
-  return db.createMoment(created).then(data => dispatch(create(data)));
+  return db.createMoment(newMoment).then(data => dispatch(create(data)));
 };
 
 const update = updated => ({
@@ -77,4 +76,18 @@ const remove = deleted => ({
 export const deleteMoment = deleted => dispatch => {
   dispatch(setLoading());
   return db.deleteMoment(deleted).then(() => dispatch(remove(deleted)));
+};
+
+const _setMomentToEdit = momentToEdit => ({
+  type: "set_moment_to_edit",
+  payload: { momentToEdit }
+});
+
+export const setMomentToEdit = momentToEdit => dispatch => {
+  return dispatch(_setMomentToEdit(momentToEdit));
+};
+
+export const getMomentToEdit = id => dispatch => {
+  dispatch(setLoading());
+  return db.getMoment(id).then(m => dispatch(_setMomentToEdit(m)));
 };

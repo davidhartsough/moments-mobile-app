@@ -1,5 +1,6 @@
 const initialState = {
   loading: true,
+  hasFetched: false,
   data: []
 };
 
@@ -16,6 +17,7 @@ export default function places(state = initialState, action) {
       const { data } = action.payload;
       return {
         data,
+        hasFetched: true,
         loading: false
       };
     }
@@ -24,6 +26,7 @@ export default function places(state = initialState, action) {
       const data = [...state.data];
       data.push(created);
       return {
+        ...state,
         data,
         loading: false
       };
@@ -36,6 +39,7 @@ export default function places(state = initialState, action) {
       place.count = place.count + 1;
       data[index] = place;
       return {
+        ...state,
         data,
         loading: false
       };
@@ -52,6 +56,7 @@ export default function places(state = initialState, action) {
         data[index] = place;
       }
       return {
+        ...state,
         data,
         loading: false
       };

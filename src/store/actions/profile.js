@@ -10,12 +10,10 @@ const getProfile = data => ({
   payload: { data }
 });
 
-let hasFetched = false;
-export const fetchProfile = () => dispatch => {
+export const fetchProfile = hasFetched => dispatch => {
   if (hasFetched) return dispatch(setLoading(false));
   dispatch(setLoading());
   return db.fetchProfile().then(data => {
-    hasFetched = true;
     return dispatch(getProfile(data));
   });
 };

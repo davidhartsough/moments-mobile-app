@@ -20,12 +20,9 @@ export const logOut = () => dispatch => {
   return db.logOut().then(() => dispatch(setLoggedIn(false)));
 };
 
-let hasFetched = false;
 export const fetchAuth = () => dispatch => {
-  if (hasFetched) return dispatch(setLoading(false));
   dispatch(setLoading());
   return db.fetchAuth().then(isLoggedIn => {
-    hasFetched = true;
     const action = isLoggedIn ? logIn : logOut;
     return dispatch(action());
   });

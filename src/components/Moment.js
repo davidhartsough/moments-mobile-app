@@ -1,52 +1,26 @@
 import React, { useState } from "react";
+import { connect } from "react-redux";
 import { View, StyleSheet, Text } from "react-native";
 import { useHistory } from "react-router-native";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
-import { Menu, IconButton } from "react-native-paper";
+import { Surface, Menu, IconButton } from "react-native-paper";
+import { setMomentToEdit, deleteMoment } from "../store/actions/moments";
+import { getDayString } from "../utils";
 
-const options = {
-  timeZone: "UTC",
-  weekday: "long",
-  month: "short",
-  day: "numeric"
-};
-function getDayString(date) {
-  return new Date(date).toLocaleDateString(undefined, options);
-}
-
-export default function Moment({ moment, showDate = false }) {
+function Moment({ moment, showDate = false, _setMomentToEdit, _deleteMoment }) {
   const history = useHistory();
   const [visible, setVisible] = useState(false);
   const openMenu = () => setVisible(true);
   const closeMenu = () => setVisible(false);
   const { id, date, activities, people, places } = moment;
   function onEdit() {
-    setMomentToEdit(moment);
+    _setMomentToEdit(moment);
     history.push(`/edit/${id}`);
   }
-  const onDelete = () => console.log("deleet me plz");
+  const onDelete = () => _deleteMoment(moment);
   return (
-    <View style={styles.container}>
-      <View>
-        <Menu
-          visible={visible}
-          onDismiss={closeMenu}
-          anchor={
-            <IconButton
-              icon="dots-vertical"
-              size={20}
-              onPress={openMenu}
-              style={styles.menuToggle}
-            >
-              Show menu
-            </IconButton>
-          }
-        >
-          <Menu.Item onPress={onEdit} title="Edit" />
-          <Menu.Item onPress={onDelete} title="Delete" />
-        </Menu>
-      </View>
-      <View>
+    <Surface style={styles.container}>
+      <View style={styles.rows}>
         {showDate && (
           <View style={styles.row}>
             <Icon style={styles.rowIcon} name="calendar" size={24} />
@@ -72,27 +46,63 @@ export default function Moment({ moment, showDate = false }) {
           </View>
         )}
       </View>
-    </View>
+      <View style={styles.menuContainer}>
+        <Menu
+          visible={visible}
+          onDismiss={closeMenu}
+          anchor={
+            <IconButton icon="dots-vertical" size={20} onPress={openMenu} />
+          }
+        >
+          <Menu.Item onPress={onEdit} title="Edit" />
+          <Menu.Item onPress={onDelete} title="Delete" />
+        </Menu>
+      </View>
+    </Surface>
   );
 }
 
+const mapDispatchToProps = dispatch => ({
+  _setMomentToEdit: m => dispatch(setMomentToEdit(m)),
+  _deleteMoment: m => dispatch(deleteMoment(m))
+});
+
+export default connect(null, mapDispatchToProps)(Moment);
+
 const styles = StyleSheet.create({
   container: {
-    // padding: "16px 36px 8px 16px",
-    margin: 0,
-    // borderRadius: "0.25rem",
-    backgroundColor: "#fff"
-    // border: "1px solid rgba(0, 0, 0, 0.1)",
-    // boxShadow:
-    //   "0px 2px 1px -1px rgba(0, 0, 0, 0.2), 0px 1px 1px 0px rgba(0, 0, 0, 0.14), 0px 1px 3px 0px rgba(0, 0, 0, 0.12)"
+    marginTop: 20,
+    borderRadius: 4,
+    backgroundColor: "#fff",
+    borderWidth: 1,
+    borderColor: "rgba(0, 0, 0, 0.1)",
+    borderStyle: "solid",
+    elevation: 2,
+    flexDirection: "row"
   },
-  menuToggle: {
-    margin: 1
+  menuContainer: {
+    width: 32,
+    height: 38,
+    justifyContent: "center",
+    alignItems: "center"
+  },
+  rows: {
+    padding: 16,
+    paddingRight: 2,
+    paddingBottom: 8,
+    flex: 1
   },
   row: {
-    // flex: 1,
-    // flexDirection: "row"
+    flexDirection: "row",
+    alignItems: "center",
+    marginBottom: 12
   },
-  rowIcon: {},
-  rowText: {}
+  rowIcon: {
+    height: 24
+  },
+  rowText: {
+    marginLeft: 16,
+    flex: 1,
+    fontSize: 16
+  }
 });

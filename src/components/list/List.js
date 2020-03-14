@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { View, Text } from "react-native";
+import { ScrollView, View, Text, StyleSheet } from "react-native";
 import { Searchbar, DataTable } from "react-native-paper";
 import ListItem from "./ListItem";
 
@@ -40,7 +40,7 @@ export default function List({ singular, type, plural, items }) {
   const query = search.trim().toUpperCase();
   let listItems = items;
   listItems = listItems.filter(({ count }) => count > 0);
-  if (query.length > 1) {
+  if (query.length > 0) {
     listItems = items.filter(({ name }) => name.toUpperCase().includes(query));
   }
   if (listItems.length) {
@@ -56,9 +56,14 @@ export default function List({ singular, type, plural, items }) {
   }
 
   return (
-    <View>
-      <Searchbar placeholder="Search" onChangeText={setSearch} value={search} />
-      <DataTable>
+    <View style={styles.container}>
+      <Searchbar
+        placeholder="Search"
+        onChangeText={setSearch}
+        value={search}
+        style={styles.search}
+      />
+      <DataTable style={styles.container}>
         <DataTable.Header>
           <DataTable.Title
             sortDirection={
@@ -79,13 +84,34 @@ export default function List({ singular, type, plural, items }) {
           </DataTable.Title>
         </DataTable.Header>
         {listItems.length ? (
-          listItems.map(({ id, name, count }) => (
-            <ListItem key={id} name={name} count={count} type={singular} />
-          ))
+          <ScrollView style={styles.container}>
+            {listItems.map(({ id, name, count }) => (
+              <ListItem key={id} name={name} count={count} type={singular} />
+            ))}
+          </ScrollView>
         ) : (
-          <Text>No {plural} found for that search.</Text>
+          <Text style={styles.noresults}>
+            No {plural} found for that search.
+          </Text>
         )}
       </DataTable>
     </View>
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1
+  },
+  search: {
+    elevation: 0,
+    backgroundColor: "#f8f8f8",
+    borderBottomColor: "rgba(0,0,0,0.1)",
+    borderBottomWidth: 1,
+    borderRadius: 0
+  },
+  noresults: {
+    padding: 12,
+    textAlign: "center"
+  }
+});

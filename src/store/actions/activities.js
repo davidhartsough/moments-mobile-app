@@ -10,12 +10,10 @@ const getActivities = data => ({
   payload: { data }
 });
 
-let hasFetched = false;
-export const fetchActivities = () => dispatch => {
+export const fetchActivities = hasFetched => dispatch => {
   if (hasFetched) return dispatch(setLoading(false));
   dispatch(setLoading());
   return db.fetchActivities().then(data => {
-    hasFetched = true;
     return dispatch(getActivities(data));
   });
 };
