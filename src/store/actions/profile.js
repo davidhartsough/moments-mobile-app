@@ -10,7 +10,8 @@ const getProfile = data => ({
   payload: { data }
 });
 
-export const fetchProfile = hasFetched => dispatch => {
+export const fetchProfile = () => (dispatch, getState) => {
+  const { hasFetched } = getState().profile;
   if (hasFetched) return dispatch(setLoading(false));
   dispatch(setLoading());
   return db.fetchProfile().then(data => {

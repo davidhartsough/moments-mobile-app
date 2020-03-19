@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { connect } from "react-redux";
 import { useHistory, useParams } from "react-router-native";
 import { updateMoment, getMomentToEdit } from "../../store/actions/moments";
@@ -15,27 +15,38 @@ function EditorLoading() {
   );
 }
 
-function Editor({ id, goBack, moments, _updateMoment, _getMomentToEdit }) {
+function Editor({
+  id,
+  goBack,
+  momentsLoading,
+  momentToEdit,
+  _updateMoment,
+  _getMomentToEdit
+}) {
+  const [isLoading, setIsLoading] = useState(false);
   useEffect(() => {
-    const { momentToEdit } = moments;
     if (momentToEdit === null || momentToEdit.id !== id) {
       _getMomentToEdit(id);
     }
-  }, [id, moments, _getMomentToEdit]);
-  function onSave(updatedMoment) {
-    _updateMoment(updatedMoment).then(() => goBack());
+  }, [id, momentToEdit, _getMomentToEdit]);
+  function onSave(updated, previous) {
+    setIsLoading(true);
+    _updateMoment(updated, previous).then(() => goBack());
   }
-  if (moments.loading) return <EditorLoading />;
-  return <MomentForm onSave={onSave} momentToEdit={moments.momentToEdit} />;
+  if (momentsLoading || isLoading) return <EditorLoading />;
+  return <MomentForm onSave={onSave} momentToEdit={momentToEdit} />;
 }
 
 const mapDispatchToProps = dispatch => ({
-  _updateMoment: m => dispatch(updateMoment(m)),
+  _updateMoment: (u, p) => dispatch(updateMoment(u, p)),
   _getMomentToEdit: id => dispatch(getMomentToEdit(id))
 });
 
 const EditMoment = connect(
-  ({ moments }) => ({ moments }),
+  ({ moments }) => ({
+    momentsLoading: moments.loading,
+    momentToEdit: moments.momentToEdit
+  }),
   mapDispatchToProps
 )(Editor);
 

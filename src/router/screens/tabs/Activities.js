@@ -7,8 +7,7 @@ function Activities(props) {
   return <TabViewList {...props} title="Activities" type="Activity" />;
 }
 
-const mapStateToProps = ({ activities: { hasFetched, loading, data } }) => ({
-  hasFetched,
+const mapStateToProps = ({ activities: { loading, data } }) => ({
   loading,
   data
 });

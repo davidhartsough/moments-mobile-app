@@ -1,6 +1,6 @@
 const mockMoment = {
   id: "123abc",
-  uid: "mHZcKLy864ZeRxuaXBfD3RI7Ugm1",
+  uid: "321",
   date: "2019-11-23",
   activities: ["hang out"],
   people: ["Jared Guttromson", "Diego Casillas", "William Bigirimana", "Yves"],
@@ -9,7 +9,7 @@ const mockMoment = {
 const mockMoments = [
   {
     id: "abc123abc",
-    uid: "mHZcKLy864ZeRxuaXBfD3RI7Ugm1",
+    uid: "321",
     date: "2019-11-23",
     activities: ["hang out"],
     people: [
@@ -22,7 +22,7 @@ const mockMoments = [
   },
   {
     id: "bc123abc",
-    uid: "mHZcKLy864ZeRxuaXBfD3RI7Ugm1",
+    uid: "321",
     date: "2019-11-23",
     activities: ["hang out", "dinner", "spaghetti"],
     people: [
@@ -35,7 +35,7 @@ const mockMoments = [
   },
   {
     id: "c123abc",
-    uid: "mHZcKLy864ZeRxuaXBfD3RI7Ugm1",
+    uid: "321",
     date: "2019-11-27",
     activities: [
       "hang out",
@@ -61,7 +61,7 @@ const mockMoments = [
 ];
 const mockMomentTwo = {
   id: "321xyz",
-  uid: "mSDcKLy864ZeRxuaXBfD3RI7Ugm1",
+  uid: "321",
   date: "2019-11-24",
   activities: ["happy hour"],
   people: ["Wai-man Fung", "Diego Casillas", "William Bigirimana"],
@@ -69,7 +69,7 @@ const mockMomentTwo = {
 };
 const mockMomentThree = {
   id: "456xyz",
-  uid: "mSDcKLy864ZeRxuaXBfD3RI7Ugm1",
+  uid: "321",
   date: "2019-11-20",
   activities: ["hang out"],
   people: ["Jake Albers", "Kyler Daron", "Wai-man Fung"],
@@ -90,7 +90,10 @@ export function fetchMomentsByQuery(query, type) {
 
 export function createMoment(created) {
   return new Promise(function(resolve, reject) {
-    setTimeout(() => resolve({ ...created, id: "asdf4567" }), 250);
+    setTimeout(
+      () => resolve({ ...created, id: `newnew${new Date().getTime()}` }),
+      250
+    );
   });
 }
 

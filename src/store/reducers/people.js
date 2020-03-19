@@ -36,7 +36,7 @@ export default function people(state = initialState, action) {
       const data = [...state.data];
       const index = data.findIndex(i => i.id === id);
       const person = data[index];
-      person.count = person.count + 1;
+      person.count += 1;
       data[index] = person;
       return {
         ...state,

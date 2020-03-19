@@ -36,7 +36,7 @@ export default function places(state = initialState, action) {
       const data = [...state.data];
       const index = data.findIndex(i => i.id === id);
       const place = data[index];
-      place.count = place.count + 1;
+      place.count += 1;
       data[index] = place;
       return {
         ...state,

@@ -7,8 +7,7 @@ function People(props) {
   return <TabViewList {...props} title="People" type="Person" />;
 }
 
-const mapStateToProps = ({ people: { hasFetched, loading, data } }) => ({
-  hasFetched,
+const mapStateToProps = ({ people: { loading, data } }) => ({
   loading,
   data
 });

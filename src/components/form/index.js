@@ -16,23 +16,19 @@ function MomentForm({
 }) {
   const [isLoading, setIsLoading] = useState(true);
   useEffect(() => {
-    Promise.all([_getPeople(), _getPlaces(), _getActivities()]).then(() =>
-      setIsLoading(false)
-    );
-  }, [_getPeople, _getPlaces, _getActivities]);
+    Promise.all([_getPeople(), _getPlaces(), _getActivities()]).then(() => {
+      setIsLoading(false);
+    });
+  }, [_getPeople, _getPlaces, _getActivities, setIsLoading]);
 
   const title = `${momentToEdit === undefined ? "New" : "Edit"} Moment`;
-  function save(m) {
-    setIsLoading(true);
-    onSave(m);
-  }
   return (
     <>
       <HeaderWithBack title={title} />
       {isLoading ? (
         <ScreenLoader />
       ) : (
-        <Form onSave={save} initialMoment={momentToEdit} />
+        <Form onSave={onSave} initialMoment={momentToEdit} />
       )}
     </>
   );

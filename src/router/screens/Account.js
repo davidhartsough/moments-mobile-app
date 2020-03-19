@@ -36,8 +36,7 @@ function AccountContainer(props) {
   );
 }
 
-const mapStateToProps = ({ profile: { hasFetched, loading, data } }) => ({
-  hasFetched,
+const mapStateToProps = ({ profile: { loading, data } }) => ({
   loading,
   data
 });

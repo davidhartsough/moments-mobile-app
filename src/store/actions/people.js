@@ -10,7 +10,8 @@ const getPeople = data => ({
   payload: { data }
 });
 
-export const fetchPeople = hasFetched => dispatch => {
+export const fetchPeople = () => (dispatch, getState) => {
+  const { hasFetched } = getState().people;
   if (hasFetched) return dispatch(setLoading(false));
   dispatch(setLoading());
   return db.fetchPeople().then(data => {

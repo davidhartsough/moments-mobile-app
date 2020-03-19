@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { FlatList, TouchableHighlight, Text, StyleSheet } from "react-native";
 import { HelperText } from "react-native-paper";
 
@@ -16,21 +16,41 @@ function Item({ item, onPress }) {
 }
 
 export default function Suggestions({ input, values, options, selectOption }) {
-  let data = [];
-  if (input.length) {
-    const upperCaseInput = input.toUpperCase();
-    const filtered = options.filter(i =>
-      i.toUpperCase().includes(upperCaseInput)
-    );
-    if (filtered.length) {
-      data = filtered;
-    } else if (values.includes(input.toLowerCase())) {
-      return (
-        <HelperText style={styles.notice}>"{input}" already added</HelperText>
+  const [data, setData] = useState([]);
+  const [alreadyAdded, setAlreadyAdded] = useState(false);
+  useEffect(() => {
+    if (input.length) {
+      let newData = [];
+      let alreadyAdded = false;
+      const upperCaseInput = input.toUpperCase();
+      const filtered = options.filter(
+        i => i.toUpperCase().includes(upperCaseInput) && !values.includes(i)
       );
-    } else if (input.length > 1) {
-      data = [`Create "${input}"`];
+      if (filtered.length) {
+        newData = filtered;
+        // newData = [...new Set(filtered)];
+      } else {
+        const index = values.findIndex(v => v.toUpperCase() === upperCaseInput);
+        if (index >= 0) {
+          alreadyAdded = values[index];
+        }
+      }
+      if (input.length > 1) {
+        newData.push(`Create "${input}"`);
+      }
+      setData(newData);
+      setAlreadyAdded(alreadyAdded);
+    } else {
+      setAlreadyAdded(false);
+      setData([]);
     }
+  }, [input, values, options, setData, setAlreadyAdded]);
+  if (alreadyAdded) {
+    return (
+      <HelperText style={styles.notice}>
+        "{alreadyAdded}" already added
+      </HelperText>
+    );
   }
   return (
     <FlatList

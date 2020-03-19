@@ -36,7 +36,7 @@ export default function activities(state = initialState, action) {
       const data = [...state.data];
       const index = data.findIndex(i => i.id === id);
       const activity = data[index];
-      activity.count = activity.count + 1;
+      activity.count += 1;
       data[index] = activity;
       return {
         ...state,

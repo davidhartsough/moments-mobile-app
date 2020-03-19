@@ -35,13 +35,16 @@ function Form({
   }
   function save() {
     const { id } = initialMoment;
-    onSave({
-      id,
-      date: date.toISOString().substr(0, 10),
-      people,
-      places,
-      activities
-    });
+    onSave(
+      {
+        id,
+        date: date.toISOString().substr(0, 10),
+        people,
+        places,
+        activities
+      },
+      initialMoment
+    );
   }
   return (
     <ScrollView style={styles.container}>

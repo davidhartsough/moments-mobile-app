@@ -1,10 +1,10 @@
 import React, { useEffect } from "react";
 import ScreenLoader from "./ScreenLoader";
 
-export default function Fetcher({ hasFetched, loading, fetchData, children }) {
+export default function Fetcher({ loading, fetchData, children }) {
   useEffect(() => {
-    fetchData(hasFetched);
-  }, [hasFetched, fetchData]);
+    fetchData();
+  }, [fetchData]);
   if (loading) return <ScreenLoader />;
   return children;
 }

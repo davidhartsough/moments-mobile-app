@@ -1,5 +1,5 @@
 const mock = {
-  name: "Steve"
+  name: "David Hartsough"
 };
 
 export function fetchProfile() {

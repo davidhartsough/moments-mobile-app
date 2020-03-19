@@ -10,7 +10,8 @@ const getActivities = data => ({
   payload: { data }
 });
 
-export const fetchActivities = hasFetched => dispatch => {
+export const fetchActivities = () => (dispatch, getState) => {
+  const { hasFetched } = getState().activities;
   if (hasFetched) return dispatch(setLoading(false));
   dispatch(setLoading());
   return db.fetchActivities().then(data => {

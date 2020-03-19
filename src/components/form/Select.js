@@ -3,11 +3,9 @@ import { View, StyleSheet } from "react-native";
 import { Chip, TextInput } from "react-native-paper";
 import Suggestions from "./Suggestions";
 
-const makeLowerCase = arr => arr.map(i => i.toLowerCase());
-
 export default function Select({ placeholder, allOptions, values, setValues }) {
   const [value, setValue] = useState("");
-  const [options, setOptions] = useState(makeLowerCase(allOptions));
+  const [options, setOptions] = useState(allOptions);
   function selectOption(option) {
     if (option.startsWith('Create "')) {
       const newItem = option.slice(8, -1);
@@ -17,13 +15,15 @@ export default function Select({ placeholder, allOptions, values, setValues }) {
     } else {
       setValues([...values, option]);
       const lowerCaseOption = option.toLowerCase();
-      setOptions([...options].filter(o => o !== lowerCaseOption));
+      setOptions([...options].filter(o => o.toLowerCase() !== lowerCaseOption));
     }
     setValue("");
   }
   function removeValue(index) {
     const item = values[index];
-    setOptions([...options, item.toLowerCase()]);
+    if (allOptions.includes(item) && !options.includes(item)) {
+      setOptions([...options, item]);
+    }
     const newValues = [...values];
     newValues.splice(index, 1);
     setValues(newValues);
@@ -51,7 +51,7 @@ export default function Select({ placeholder, allOptions, values, setValues }) {
       />
       <Suggestions
         input={value}
-        values={makeLowerCase(values)}
+        values={values}
         options={options}
         selectOption={selectOption}
       />
