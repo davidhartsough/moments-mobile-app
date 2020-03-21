@@ -44,6 +44,7 @@ export default function Select({ placeholder, allOptions, values, setValues }) {
         </View>
       )}
       <TextInput
+        autoFocus
         label={placeholder}
         value={value}
         onChangeText={setValue}

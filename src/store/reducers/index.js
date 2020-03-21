@@ -6,7 +6,7 @@ import people from "./people";
 import places from "./places";
 import activities from "./activities";
 
-export default combineReducers({
+const appReducer = combineReducers({
   auth,
   profile,
   moments,
@@ -14,3 +14,12 @@ export default combineReducers({
   places,
   activities
 });
+
+const rootReducer = (state, action) => {
+  if (action.type === "CLEAR_STATE_RESET") {
+    state = undefined;
+  }
+  return appReducer(state, action);
+};
+
+export default rootReducer;

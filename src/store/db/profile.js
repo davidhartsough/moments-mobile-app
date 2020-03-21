@@ -1,5 +1,7 @@
 const mock = {
-  name: "David Hartsough"
+  uid: "321",
+  name: "David Hartsough",
+  email: "hartsoughdavid@gmail.com"
 };
 
 export function fetchProfile() {

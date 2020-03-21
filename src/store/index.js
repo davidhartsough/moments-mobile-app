@@ -4,6 +4,9 @@ import { persistStore } from "redux-persist";
 import { PersistGate } from "redux-persist/integration/react";
 import store from "./store";
 import ScreenLoader from "../components/ScreenLoader";
+import { initDatabase } from "./db/fb";
+
+initDatabase();
 
 const persistor = persistStore(store);
 

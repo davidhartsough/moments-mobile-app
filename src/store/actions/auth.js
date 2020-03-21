@@ -1,4 +1,5 @@
 import * as db from "../db/auth";
+import { receiveProfile } from "./profile";
 
 const setLoading = (loading = true) => ({
   type: "set_auth_loading",
@@ -11,13 +12,19 @@ const setLoggedIn = (isLoggedIn = true) => ({
 });
 
 export const logIn = () => dispatch => {
-  dispatch(setLoading());
-  return db.logIn().then(() => dispatch(setLoggedIn(true)));
+  dispatch(setLoggedIn(true));
 };
 
 export const logOut = () => dispatch => {
+  dispatch(setLoggedIn(false));
+};
+
+export const signOut = () => dispatch => {
   dispatch(setLoading());
-  return db.logOut().then(() => dispatch(setLoggedIn(false)));
+  return db.logOut().then(() => {
+    dispatch({ type: "CLEAR_STATE_RESET" });
+    return dispatch(logOut());
+  });
 };
 
 export const fetchAuth = () => dispatch => {
@@ -26,4 +33,13 @@ export const fetchAuth = () => dispatch => {
     const action = isLoggedIn ? logIn : logOut;
     return dispatch(action());
   });
+};
+
+export const handleAuth = user => dispatch => {
+  if (user) {
+    dispatch(receiveProfile(user.uid, user.displayName, user.email));
+    return dispatch(logIn());
+  } else {
+    return dispatch(logOut());
+  }
 };

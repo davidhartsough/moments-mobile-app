@@ -2,6 +2,8 @@ import React from "react";
 import { StyleSheet, View } from "react-native";
 import Index from "./src";
 
+console.log("Heyyy dude");
+
 export default function App() {
   return (
     <View style={styles.container}>
