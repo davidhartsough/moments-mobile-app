@@ -47,7 +47,6 @@ const styles = StyleSheet.create({
   },
   backdrop: {
     flex: 1
-    // padding: 80
   },
   list: {
     backgroundColor: "#fff",

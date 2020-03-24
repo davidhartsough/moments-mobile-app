@@ -6,8 +6,7 @@ import ScreenLoader from "../ScreenLoader";
 import DatePicker from "./DatePicker";
 import Label from "./Label";
 import FormItem from "./FormItem";
-
-const getOptions = ({ data }) => data.map(({ name }) => name);
+import { getLocaleISOString, getInitialDate } from "../../utils";
 
 const emptyMoment = {
   id: null,
@@ -16,8 +15,7 @@ const emptyMoment = {
   places: [],
   activities: []
 };
-
-const getInitialDate = date => (date ? new Date(date) : new Date());
+const getOptions = ({ data }) => data.map(({ name }) => name);
 
 function Form({
   onSave,
@@ -26,6 +24,7 @@ function Form({
   _places,
   _activities
 }) {
+  const [loading, setLoading] = useState(false);
   const [date, setDate] = useState(getInitialDate(initialMoment.date));
   const [people, setPeople] = useState(initialMoment.people || []);
   const [places, setPlaces] = useState(initialMoment.places || []);
@@ -34,17 +33,16 @@ function Form({
     return <ScreenLoader />;
   }
   function save() {
+    setLoading(true);
     const { id } = initialMoment;
-    onSave(
-      {
-        id,
-        date: date.toISOString().substr(0, 10),
-        people,
-        places,
-        activities
-      },
-      initialMoment
-    );
+    const momentData = {
+      date: getLocaleISOString(date, !!id),
+      people,
+      places,
+      activities
+    };
+    const newMoment = id ? { id, ...momentData } : momentData;
+    onSave(newMoment, initialMoment);
   }
   return (
     <ScrollView style={styles.container}>
@@ -79,6 +77,7 @@ function Form({
           !date || (!people.length && !places.length && !activities.length)
         }
         style={styles.fab}
+        loading={loading}
       />
     </ScrollView>
   );

@@ -18,6 +18,19 @@ function sortByDate(a, b) {
   }
 }
 
+function getPreposition(type) {
+  switch (type) {
+    case "person":
+      return "with";
+    case "place":
+      return "at";
+    case "activity":
+      return "matching";
+    default:
+      return;
+  }
+}
+
 function List({ type, q, moments, getMoments }) {
   useEffect(() => {
     getMoments(q, type);
@@ -26,7 +39,7 @@ function List({ type, q, moments, getMoments }) {
   if (moments.momentsByQuery.length < 1) {
     return (
       <Text style={styles.empty}>
-        No moments found for the {type} named "{q}".
+        No moments found for the {type} named "{q}"
       </Text>
     );
   }
@@ -34,11 +47,13 @@ function List({ type, q, moments, getMoments }) {
   return (
     <ScrollView style={styles.listview}>
       <Text style={styles.heading}>
-        {items.length} result{items.length > 1 && "s"} for: "{q}"
+        {items.length} moment{items.length > 1 && "s"} {getPreposition(type)}: "
+        {q}"
       </Text>
       {items.map(m => (
         <Moment key={m.id} moment={m} showDate={true} />
       ))}
+      <View style={styles.spacer} />
     </ScrollView>
   );
 }
@@ -80,8 +95,11 @@ const styles = StyleSheet.create({
     padding: 16
   },
   empty: {
-    marginTop: 16,
     fontSize: 16,
-    textAlign: "center"
+    textAlign: "center",
+    padding: 48
+  },
+  spacer: {
+    paddingBottom: 96
   }
 });

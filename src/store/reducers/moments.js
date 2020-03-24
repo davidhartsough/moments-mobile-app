@@ -1,11 +1,6 @@
-const date = new Date();
-const mn = date.getMonth() + 1;
-const currentYear = date.getFullYear();
-const currentMonth = mn < 10 ? `0${mn}` : mn;
-
 const initialState = {
   loading: true,
-  month: `${currentYear}-${currentMonth}`,
+  month: null,
   momentsByMonth: [],
   query: "",
   queryType: "",
@@ -27,8 +22,10 @@ function getType(queryType) {
       return "";
   }
 }
-const isInQuery = (m, { query, queryType }) =>
-  m[getType(queryType)].includes(query);
+const isInQuery = (m, { query, queryType }) => {
+  if (query === "" || queryType === "") return false;
+  return m[getType(queryType)].includes(query);
+};
 
 export default function moments(state = initialState, action) {
   switch (action.type) {

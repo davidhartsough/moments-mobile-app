@@ -4,11 +4,19 @@ import {
   Modal,
   TouchableHighlight,
   Text,
-  StyleSheet
+  StyleSheet,
+  Platform
 } from "react-native";
 import { Appbar, Chip } from "react-native-paper";
 import Label from "./Label";
 import Select from "./Select";
+
+const appbarProps =
+  Platform.OS === "ios"
+    ? {}
+    : {
+        statusBarHeight: 0
+      };
 
 export default function FormItem({ label, icon, options, values, setValues }) {
   const [visible, setVisible] = useState(false);
@@ -16,10 +24,10 @@ export default function FormItem({ label, icon, options, values, setValues }) {
   const close = () => setVisible(false);
   const placeholder = `Add ${label}`;
   return (
-    <View style={styles.container}>
+    <View>
       <Label text={label} icon={icon} />
       <Modal animationType="slide" transparent={false} visible={visible}>
-        <Appbar.Header>
+        <Appbar.Header {...appbarProps}>
           <Appbar.Content title={placeholder} />
           <Appbar.Action onPress={close} icon="check" />
         </Appbar.Header>
@@ -52,9 +60,6 @@ export default function FormItem({ label, icon, options, values, setValues }) {
 }
 
 const styles = StyleSheet.create({
-  container: {
-    // backgroundColor: "#fff"
-  },
   opener: {
     marginTop: 4,
     marginBottom: 20,
@@ -64,12 +69,10 @@ const styles = StyleSheet.create({
     paddingHorizontal: 8,
     paddingTop: 8,
     paddingBottom: 2
-    // backgroundColor: "#fff"
   },
   chips: {
     flexDirection: "row",
     flexWrap: "wrap"
-    // backgroundColor: "#fff"
   },
   chip: {
     marginRight: 6,

@@ -2,42 +2,7 @@ import React, { useState } from "react";
 import { View, Text, TouchableHighlight, StyleSheet } from "react-native";
 import { IconButton } from "react-native-paper";
 import SelectModal from "./SelectModal";
-
-const months = [
-  "Jan",
-  "Feb",
-  "Mar",
-  "Apr",
-  "May",
-  "Jun",
-  "Jul",
-  "Aug",
-  "Sep",
-  "Oct",
-  "Nov",
-  "Dec"
-];
-const date = new Date();
-const currentMonthNumber = date.getMonth() + 1;
-const currentYear = date.getFullYear();
-const getMM = mn => (mn < 10 ? `0${mn}` : mn);
-const monthOptions = months
-  .slice(0, currentMonthNumber)
-  .map((m, i) => ({
-    value: `${currentYear}-${getMM(i + 1)}`,
-    label: `${m} ${currentYear}`
-  }))
-  .reverse();
-for (let year = currentYear - 1; year >= 2019; year--) {
-  for (let i = 11; i >= 0; i--) {
-    monthOptions.push({
-      value: `${year}-${getMM(i + 1)}`,
-      label: `${months[i]} ${year}`
-    });
-  }
-}
-const prevMonthBound = monthOptions.length - 1;
-// const currentMonth = getMM(currentMonthNumber);
+import { monthOptions, prevMonthBound } from "../../utils";
 
 export default function MonthPicker({ updateMonth }) {
   const [show, setShow] = useState(false);

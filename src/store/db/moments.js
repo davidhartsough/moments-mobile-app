@@ -1,117 +1,46 @@
-const mockMoment = {
-  id: "123abc",
-  uid: "321",
-  date: "2019-11-23",
-  activities: ["hang out"],
-  people: ["Jared Guttromson", "Diego Casillas", "William Bigirimana", "Yves"],
-  places: ["BSU"]
-};
-const mockMoments = [
-  {
-    id: "abc123abc",
-    uid: "321",
-    date: "2019-11-23",
-    activities: ["hang out"],
-    people: [
-      "Jared Guttromson",
-      "Diego Casillas",
-      "William Bigirimana",
-      "Yves"
-    ],
-    places: ["BSU"]
-  },
-  {
-    id: "bc123abc",
-    uid: "321",
-    date: "2019-11-23",
-    activities: ["hang out", "dinner", "spaghetti"],
-    people: [
-      "Steven Stevenson",
-      "Peter Peterson",
-      "Will Williamson",
-      "John Johnson"
-    ],
-    places: ["Hyde Perk", "Denny's", "Old Chicago"]
-  },
-  {
-    id: "c123abc",
-    uid: "321",
-    date: "2019-11-27",
-    activities: [
-      "hang out",
-      "dinner",
-      "spaghetti",
-      "drinks",
-      "videogames",
-      "play games"
-    ],
-    people: [
-      "Steven Stevenson",
-      "Peter Peterson",
-      "Will Williamson",
-      "John Johnson"
-    ],
-    places: [
-      "Hyde Perk",
-      "Denny's",
-      "Old Chicago",
-      "The Big Cool House with the Red Door"
-    ]
-  }
-];
-const mockMomentTwo = {
-  id: "321xyz",
-  uid: "321",
-  date: "2019-11-24",
-  activities: ["happy hour"],
-  people: ["Wai-man Fung", "Diego Casillas", "William Bigirimana"],
-  places: ["Old Chicago"]
-};
-const mockMomentThree = {
-  id: "456xyz",
-  uid: "321",
-  date: "2019-11-20",
-  activities: ["hang out"],
-  people: ["Jake Albers", "Kyler Daron", "Wai-man Fung"],
-  places: ["Wai-man Fung's house"]
-};
+import {
+  createDoc,
+  deleteDoc,
+  getDoc,
+  getMomentsByMonth,
+  getMomentsByQuery,
+  updateDoc
+} from "./fb";
 
 export function fetchMomentsByMonth(month) {
-  return new Promise(function(resolve, reject) {
-    setTimeout(() => resolve(mockMoments), 250);
-  });
+  return getMomentsByMonth(month);
+}
+
+function getPluralType(type) {
+  switch (type) {
+    case "person":
+      return "people";
+    case "place":
+      return "places";
+    case "activity":
+      return "activities";
+    default:
+      break;
+  }
 }
 
 export function fetchMomentsByQuery(query, type) {
-  return new Promise(function(resolve, reject) {
-    setTimeout(() => resolve([mockMomentTwo, mockMomentThree]), 250);
-  });
+  const pluralType = getPluralType(type);
+  return getMomentsByQuery(query, pluralType);
 }
 
 export function createMoment(created) {
-  return new Promise(function(resolve, reject) {
-    setTimeout(
-      () => resolve({ ...created, id: `newnew${new Date().getTime()}` }),
-      250
-    );
-  });
+  return createDoc("moments", created);
 }
 
-export function updateMoment(updated) {
-  return new Promise(function(resolve, reject) {
-    setTimeout(() => resolve(updated), 250);
-  });
+export function updateMoment({ id, date, people, places, activities }) {
+  return updateDoc("moments", id, { date, people, places, activities });
 }
 
-export function deleteMoment(deleted) {
-  return new Promise(function(resolve, reject) {
-    console.log("DELEET");
-    setTimeout(() => resolve(deleted), 250);
-  });
+export function deleteMoment({ id }) {
+  return deleteDoc("moments", id);
 }
 
 export function getMoment(id) {
-  return new Promise(function(resolve, reject) {
-    setTimeout(() => resolve(mockMoment), 250);
-  });
+  return getDoc("moments", id);
 }

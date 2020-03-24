@@ -4,11 +4,7 @@ import { ScrollView, View, StyleSheet } from "react-native";
 import MonthPicker from "./MonthPicker";
 import MomentsByMonth from "./MomentsByMonth";
 import { fetchMomentsByMonth } from "../../store/actions/moments";
-
-const date = new Date();
-const monthNum = date.getMonth() + 1;
-const currentMonth = monthNum < 10 ? `0${monthNum}` : monthNum;
-const currentYear = date.getFullYear();
+import { currentMonth, currentYear } from "../../utils";
 
 function CalendarMonth({ moments, getMoments }) {
   const [month, setMonth] = useState(`${currentYear}-${currentMonth}`);

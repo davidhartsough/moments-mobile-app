@@ -11,7 +11,7 @@ const getPlaces = data => ({
 });
 
 export const fetchPlaces = () => (dispatch, getState) => {
-  const { hasFetched } = getState().activities;
+  const { hasFetched } = getState().places;
   if (hasFetched) return dispatch(setLoading(false));
   dispatch(setLoading());
   return db.fetchPlaces().then(data => {

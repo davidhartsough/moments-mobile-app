@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { connect } from "react-redux";
 import { View, StyleSheet, Text } from "react-native";
 import { useHistory } from "react-router-native";
-import Icon from "react-native-vector-icons/MaterialCommunityIcons";
+import { MaterialCommunityIcons as Icon } from "@expo/vector-icons";
 import { Surface, Menu, IconButton } from "react-native-paper";
 import { setMomentToEdit, deleteMoment } from "../store/actions/moments";
 import { getDayString } from "../utils";

@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { View, StyleSheet } from "react-native";
+import { View, SafeAreaView, StyleSheet } from "react-native";
 import { Chip, TextInput } from "react-native-paper";
 import Suggestions from "./Suggestions";
 
@@ -29,7 +29,7 @@ export default function Select({ placeholder, allOptions, values, setValues }) {
     setValues(newValues);
   }
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container}>
       {values.length > 0 && (
         <View style={styles.chips}>
           {values.map((v, index) => (
@@ -56,12 +56,14 @@ export default function Select({ placeholder, allOptions, values, setValues }) {
         options={options}
         selectOption={selectOption}
       />
-    </View>
+    </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {},
+  container: {
+    flex: 1
+  },
   chips: {
     flexDirection: "row",
     flexWrap: "wrap",
@@ -79,14 +81,3 @@ const styles = StyleSheet.create({
     backgroundColor: "#f0f0f0"
   }
 });
-
-/*
-style={styles.input}
-multiline={false}
-blurOnSubmit
-enablesReturnKeyAutomatically
-maxLength={120}
-onSubmitEditing={onSubmitEditing}
-onKeyPress={onKeyPress}
-returnKeyType="done"
-*/

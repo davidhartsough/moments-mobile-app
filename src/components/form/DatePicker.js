@@ -9,15 +9,22 @@ import {
 } from "react-native";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import { Appbar } from "react-native-paper";
-import { formatDate } from "../../utils";
+import { formatDate, convertAndroidDate } from "../../utils";
 
-const options = {
-  weekday: "long",
-  month: "short",
-  day: "numeric"
-};
 const today = new Date();
 const minDate = new Date(1950, 2, 2);
+
+function DTPicker({ date, onChange }) {
+  return (
+    <DateTimePicker
+      value={date}
+      onChange={onChange}
+      maximumDate={today}
+      minimumDate={minDate}
+      timeZoneOffsetInMinutes={0}
+    />
+  );
+}
 
 function IosDatePicker({ initialDate, show, close, changeDate }) {
   const [date, setDate] = useState(initialDate);
@@ -33,12 +40,7 @@ function IosDatePicker({ initialDate, show, close, changeDate }) {
         <Appbar.Action onPress={save} icon="check" />
       </Appbar.Header>
       <View>
-        <DateTimePicker
-          value={date}
-          onChange={onChange}
-          maximumDate={today}
-          minimumDate={minDate}
-        />
+        <DTPicker date={date} onChange={onChange} />
       </View>
     </Modal>
   );
@@ -46,14 +48,7 @@ function IosDatePicker({ initialDate, show, close, changeDate }) {
 
 function AndroidDatePicker({ date, changeDate }) {
   const onChange = (_, newDate) => changeDate(newDate || date);
-  return (
-    <DateTimePicker
-      value={date}
-      onChange={onChange}
-      maximumDate={today}
-      minimumDate={minDate}
-    />
-  );
+  return <DTPicker date={convertAndroidDate(date)} onChange={onChange} />;
 }
 
 export default function DatePicker({ date, setDate }) {

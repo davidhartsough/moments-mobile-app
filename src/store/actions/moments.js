@@ -94,7 +94,6 @@ export const createMoment = newMoment => (dispatch, getState) => {
         }
       });
     });
-
     return dispatch(create(data));
   });
 };

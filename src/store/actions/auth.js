@@ -27,19 +27,16 @@ export const signOut = () => dispatch => {
   });
 };
 
-export const fetchAuth = () => dispatch => {
-  dispatch(setLoading());
-  return db.fetchAuth().then(isLoggedIn => {
-    const action = isLoggedIn ? logIn : logOut;
-    return dispatch(action());
-  });
-};
-
 export const handleAuth = user => dispatch => {
+  dispatch(setLoading());
   if (user) {
     dispatch(receiveProfile(user.uid, user.displayName, user.email));
     return dispatch(logIn());
   } else {
     return dispatch(logOut());
   }
+};
+
+export const load = () => dispatch => {
+  dispatch(setLoading());
 };

@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
-import { SafeAreaView, StyleSheet } from "react-native";
+import { View, StyleSheet } from "react-native";
 import { Appbar, Button, Divider } from "react-native-paper";
-import { handleAuth } from "../store/actions/auth";
+import { handleAuth, load } from "../store/actions/auth";
 import ScreenLoader from "../components/ScreenLoader";
 import EmailForm from "./EmailForm";
 import {
@@ -31,7 +31,8 @@ const AuthButton = ({ icon, color, onPress, children }) => (
   </Button>
 );
 
-function Authenticator({ auth, _handleAuth, children }) {
+function Authenticator({ auth, _handleAuth, _setLoading, children }) {
+  const [loading, setLoading] = useState(true);
   const [signInVisible, setSignInVisible] = useState(false);
   const [signUpVisible, setSignUpVisible] = useState(false);
   const openSignIn = () => setSignInVisible(true);
@@ -39,23 +40,39 @@ function Authenticator({ auth, _handleAuth, children }) {
   const openSignUp = () => setSignUpVisible(true);
   const closeSignUp = () => setSignUpVisible(false);
   useEffect(() => {
-    handleAuthState(_handleAuth);
-  }, [_handleAuth]);
+    _setLoading();
+    handleAuthState(user => {
+      setLoading(false);
+      _setLoading();
+      _handleAuth(user);
+    });
+  }, [_handleAuth, _setLoading, setLoading]);
   useEffect(() => {
     if (auth.isLoggedIn && !auth.loading) {
       closeSignIn();
       closeSignUp();
     }
   }, [auth]);
-  if (auth.loading) return <ScreenLoader />;
+  function googlePress() {
+    setLoading(true);
+    trySignInWithGoogle().then(status => {
+      if (status !== "success") setLoading(false);
+    });
+  }
+  function facebookPress() {
+    setLoading(true);
+    trySignInWithFacebook().then(status => {
+      if (status !== "success") setLoading(false);
+    });
+  }
+  if (auth.loading || loading) return <ScreenLoader />;
   if (auth.isLoggedIn) return children;
   return (
     <>
       <Appbar.Header>
         <Appbar.Content title="Welcome" />
       </Appbar.Header>
-      <SafeAreaView style={styles.view}>
-        {/* <EmailSignIn visible={signInVisible} close={closeSignIn} /> */}
+      <View style={styles.view}>
         <EmailForm
           visible={signInVisible}
           close={closeSignIn}
@@ -65,18 +82,13 @@ function Authenticator({ auth, _handleAuth, children }) {
         <AuthButton onPress={openSignIn} icon="email">
           Sign in with email
         </AuthButton>
-        <AuthButton onPress={trySignInWithGoogle} icon="google" color="#4185f3">
+        <AuthButton onPress={googlePress} icon="google" color="#4185f3">
           Sign in with Google
         </AuthButton>
-        <AuthButton
-          onPress={trySignInWithFacebook}
-          icon="facebook"
-          color="#3a5998"
-        >
+        <AuthButton onPress={facebookPress} icon="facebook" color="#3a5998">
           Sign in with Facebook
         </AuthButton>
         <Divider style={styles.divider} />
-        {/* <EmailSignUp visible={signUpVisible} close={closeSignUp} /> */}
         <EmailForm
           visible={signUpVisible}
           close={closeSignUp}
@@ -86,13 +98,14 @@ function Authenticator({ auth, _handleAuth, children }) {
         <AuthButton onPress={openSignUp} icon="account-plus" color="#03a9f4">
           Sign up with email
         </AuthButton>
-      </SafeAreaView>
+      </View>
     </>
   );
 }
 
 const mapDispatchToProps = dispatch => ({
-  _handleAuth: user => dispatch(handleAuth(user))
+  _handleAuth: user => dispatch(handleAuth(user)),
+  _setLoading: () => dispatch(load())
 });
 
 export default connect(

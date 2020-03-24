@@ -28,14 +28,16 @@ export default function Suggestions({ input, values, options, selectOption }) {
       );
       if (filtered.length) {
         newData = filtered;
-        // newData = [...new Set(filtered)];
       } else {
         const index = values.findIndex(v => v.toUpperCase() === upperCaseInput);
         if (index >= 0) {
           alreadyAdded = values[index];
         }
       }
-      if (input.length > 1) {
+      if (
+        input.length > 1 &&
+        !filtered.some(i => i.toUpperCase() === upperCaseInput)
+      ) {
         newData.push(`Create "${input}"`);
       }
       setData(newData);
