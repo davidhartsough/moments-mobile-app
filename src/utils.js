@@ -1,13 +1,7 @@
 import { Platform } from "react-native";
 
-const options = {
+const utcOptions = {
   timeZone: "UTC",
-  weekday: "long",
-  month: "short",
-  day: "numeric",
-  year: "numeric"
-};
-const localOptions = {
   weekday: "long",
   month: "short",
   day: "numeric",
@@ -36,7 +30,7 @@ const months = [
   "Nov",
   "Dec"
 ];
-const optionsLong = {
+const utcOptionsLong = {
   timeZone: "UTC",
   weekday: "long",
   month: "long",
@@ -57,37 +51,39 @@ const monthsLong = [
   "December"
 ];
 
-function formatDateLocal(date) {
-  if (Platform.OS === "android") {
-    return `${weekdays[date.getDay()]}, ${
-      months[date.getMonth()]
-    } ${date.getDate()}, ${date.getFullYear()}`;
-  }
-  return date.toLocaleDateString(undefined, localOptions);
-}
-
-export function formatDate(date, utc = true) {
-  if (!utc) return formatDateLocal(date);
+export function formatDate(date) {
   if (Platform.OS === "android") {
     return `${weekdays[date.getUTCDay()]}, ${
       months[date.getUTCMonth()]
     } ${date.getUTCDate()}, ${date.getUTCFullYear()}`;
   }
-  return date.toLocaleDateString(undefined, options);
+  return date.toLocaleDateString(undefined, utcOptions);
 }
-
-export function getDayString(date) {
-  return formatDate(new Date(date));
-}
-
-export function getDayStringLong(dateString) {
-  const date = new Date(dateString);
+function formatDateLong(date) {
   if (Platform.OS === "android") {
     return `${weekdays[date.getUTCDay()]}, ${
       monthsLong[date.getUTCMonth()]
     } ${date.getUTCDate()}`;
   }
-  return date.toLocaleDateString(undefined, optionsLong);
+  return date.toLocaleDateString(undefined, utcOptionsLong);
+}
+
+const convertToSlashes = str => str.replace(/-/g, "/").replace(/T.+/, "");
+const newDateFromISOString = str => new Date(convertToSlashes(str));
+
+export const getDayString = d => formatDate(newDateFromISOString(d));
+export const getDayStringLong = d => formatDateLong(newDateFromISOString(d));
+
+// For getInitialDate
+function getToday() {
+  const d = new Date();
+  const s = `${d.getFullYear()}/${pad(d.getMonth() + 1)}/${pad(d.getDate())}`;
+  return new Date(s);
+}
+
+// For Form
+export function getInitialDate(date) {
+  return date ? newDateFromISOString(date) : getToday();
 }
 
 // For Calendar and MonthPicker
@@ -113,26 +109,3 @@ for (let year = currentYear - 1; year >= 2019; year--) {
 }
 export const monthOptions = _monthOptions;
 export const prevMonthBound = _monthOptions.length - 1;
-
-// For Form
-export const getLocaleISOString = (date, utc) => {
-  if (utc || Platform.OS === "android") return date.toISOString().substr(0, 10);
-  return `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(
-    date.getDate()
-  )}`;
-};
-
-export const getInitialDate = date => {
-  if (date) return new Date(date);
-  return new Date(getLocaleISOString(new Date(), false));
-};
-
-// For DatePicker
-export const convertAndroidDate = date => {
-  return new Date(
-    date
-      .toISOString()
-      .replace(/-/g, "/")
-      .replace(/T.+/, "")
-  );
-};

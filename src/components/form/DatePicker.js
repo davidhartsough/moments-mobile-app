@@ -9,7 +9,7 @@ import {
 } from "react-native";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import { Appbar } from "react-native-paper";
-import { formatDate, convertAndroidDate } from "../../utils";
+import { formatDate } from "../../utils";
 
 const today = new Date();
 const minDate = new Date(1950, 2, 2);
@@ -48,7 +48,7 @@ function IosDatePicker({ initialDate, show, close, changeDate }) {
 
 function AndroidDatePicker({ date, changeDate }) {
   const onChange = (_, newDate) => changeDate(newDate || date);
-  return <DTPicker date={convertAndroidDate(date)} onChange={onChange} />;
+  return <DTPicker date={date} onChange={onChange} />;
 }
 
 export default function DatePicker({ date, setDate }) {
@@ -59,23 +59,22 @@ export default function DatePicker({ date, setDate }) {
     close();
     setDate(newDate);
   }
-  const nDate = new Date(date);
   return (
     <View style={styles.view}>
       <TouchableHighlight onPress={open} underlayColor="#0000000d">
         <View style={styles.toggle}>
-          <Text style={styles.text}>{formatDate(nDate)}</Text>
+          <Text style={styles.text}>{formatDate(date)}</Text>
         </View>
       </TouchableHighlight>
       {Platform.OS === "ios" ? (
         <IosDatePicker
-          initialDate={nDate}
+          initialDate={date}
           show={show}
           close={close}
           changeDate={changeDate}
         />
       ) : show ? (
-        <AndroidDatePicker date={nDate} changeDate={changeDate} />
+        <AndroidDatePicker date={date} changeDate={changeDate} />
       ) : null}
     </View>
   );

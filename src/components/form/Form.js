@@ -6,7 +6,7 @@ import ScreenLoader from "../ScreenLoader";
 import DatePicker from "./DatePicker";
 import Label from "./Label";
 import FormItem from "./FormItem";
-import { getLocaleISOString, getInitialDate } from "../../utils";
+import { getInitialDate } from "../../utils";
 
 const emptyMoment = {
   id: null,
@@ -33,10 +33,11 @@ function Form({
     return <ScreenLoader />;
   }
   function save() {
+    if (loading) return;
     setLoading(true);
     const { id } = initialMoment;
     const momentData = {
-      date: getLocaleISOString(date, !!id),
+      date: date.toISOString().substr(0, 10),
       people,
       places,
       activities
