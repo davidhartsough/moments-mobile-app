@@ -13,9 +13,9 @@
     "facebookAppId": "524014968446692",
     "facebookDisplayName": "Moments",
     "primaryColor": "#1471eb",
-    "icon": "./assets/images/app-icon.png",
+    "icon": "./assets/images/icon.png",
     "splash": {
-      "image": "./assets/splash-icon.png",
+      "image": "./assets/splash.png",
       "resizeMode": "contain",
       "backgroundColor": "#1471eb"
     },
@@ -26,13 +26,13 @@
     "ios": {
       "bundleIdentifier": "com.davidhartsough.moments",
       "buildNumber": "0.1.0",
-      "icon": "./assets/images/ios-app-icon.png",
+      "icon": "./assets/images/ios-icon.png",
       "supportsTablet": true
     },
     "android": {
       "package": "com.davidhartsough.moments",
       "versionCode": 1,
-      "icon": "./assets/images/app-icon.png"
+      "icon": "./assets/images/icon.png"
     }
   }
 }
