@@ -22,7 +22,7 @@ export default function Suggestions({ input, values, options, selectOption }) {
     if (input.length) {
       let newData = [];
       let alreadyAdded = false;
-      const upperCaseInput = input.toUpperCase();
+      const upperCaseInput = input.toUpperCase().trim();
       const filtered = options.filter(
         i => i.toUpperCase().includes(upperCaseInput) && !values.includes(i)
       );
@@ -38,7 +38,7 @@ export default function Suggestions({ input, values, options, selectOption }) {
         input.length > 1 &&
         !filtered.some(i => i.toUpperCase() === upperCaseInput)
       ) {
-        newData.push(`Create "${input}"`);
+        newData.push(`Create "${input.trim()}"`);
       }
       setData(newData);
       setAlreadyAdded(alreadyAdded);

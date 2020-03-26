@@ -8,7 +8,7 @@ export default function Select({ placeholder, allOptions, values, setValues }) {
   const [options, setOptions] = useState(allOptions);
   function selectOption(option) {
     if (option.startsWith('Create "')) {
-      const newItem = option.slice(8, -1);
+      const newItem = option.slice(8, -1).trim();
       if (!values.includes(newItem)) {
         setValues([...values, newItem]);
       }
