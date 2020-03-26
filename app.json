@@ -10,6 +10,7 @@
     "platforms": ["ios", "android"],
     "version": "0.1.0",
     "orientation": "portrait",
+    "facebookScheme": "fb524014968446692",
     "facebookAppId": "524014968446692",
     "facebookDisplayName": "Moments",
     "primaryColor": "#1471eb",
@@ -27,12 +28,23 @@
       "bundleIdentifier": "com.davidhartsough.moments",
       "buildNumber": "0.1.0",
       "icon": "./assets/images/ios-icon.png",
-      "supportsTablet": true
+      "supportsTablet": true,
+      "config": {
+        "googleSignIn": {
+          "reservedClientId": ""
+        }
+      }
     },
     "android": {
       "package": "com.davidhartsough.moments",
       "versionCode": 1,
-      "icon": "./assets/images/icon.png"
+      "icon": "./assets/images/icon.png",
+      "config": {
+        "googleSignIn": {
+          "apiKey": "",
+          "certificateHash": ""
+        }
+      }
     }
   }
 }
