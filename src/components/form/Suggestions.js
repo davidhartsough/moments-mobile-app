@@ -24,19 +24,32 @@ export default function Suggestions({ input, values, options, selectOption }) {
       let alreadyAdded = false;
       const upperCaseInput = input.toUpperCase().trim();
       const filtered = options.filter(
-        i => i.toUpperCase().includes(upperCaseInput) && !values.includes(i)
+        (i) => i.toUpperCase().includes(upperCaseInput) && !values.includes(i)
       );
       if (filtered.length) {
+        filtered.sort((a, b) => {
+          const aUC = a.toUpperCase();
+          const bUC = b.toUpperCase();
+          const aSW = aUC.startsWith(upperCaseInput);
+          const bSW = bUC.startsWith(upperCaseInput);
+          if (aSW && !bSW) return -1;
+          if (!aSW && bSW) return 1;
+          if (aUC < bUC) return -1;
+          if (aUC > bUC) return 1;
+          return 0;
+        });
         newData = filtered;
       } else {
-        const index = values.findIndex(v => v.toUpperCase() === upperCaseInput);
+        const index = values.findIndex(
+          (v) => v.toUpperCase() === upperCaseInput
+        );
         if (index >= 0) {
           alreadyAdded = values[index];
         }
       }
       if (
         input.length > 1 &&
-        !filtered.some(i => i.toUpperCase() === upperCaseInput)
+        !filtered.some((i) => i.toUpperCase() === upperCaseInput)
       ) {
         newData.push(`Create "${input.trim()}"`);
       }
@@ -58,7 +71,7 @@ export default function Suggestions({ input, values, options, selectOption }) {
     <FlatList
       data={data}
       renderItem={({ item }) => <Item item={item} onPress={selectOption} />}
-      keyExtractor={i => i}
+      keyExtractor={(i) => i}
     />
   );
 }
@@ -67,12 +80,12 @@ const styles = StyleSheet.create({
   item: {
     padding: 16,
     borderBottomWidth: 1,
-    borderBottomColor: "#ccc"
+    borderBottomColor: "#ccc",
   },
   notice: {
-    fontSize: 14
+    fontSize: 14,
   },
   text: {
-    fontSize: 16
-  }
+    fontSize: 16,
+  },
 });
