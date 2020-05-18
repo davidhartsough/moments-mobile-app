@@ -8,13 +8,9 @@ import EmailForm from "./EmailForm";
 import {
   handleAuthState,
   trySignInWithGoogle,
-  trySignInWithFacebook,
-  initAuth,
   createUser,
   emailSignIn
 } from "../store/db/auth";
-
-initAuth();
 
 const AuthButton = ({ icon, color, onPress, children }) => (
   <Button
@@ -59,12 +55,6 @@ function Authenticator({ auth, _handleAuth, _setLoading, children }) {
       if (status !== "success") setLoading(false);
     });
   }
-  function facebookPress() {
-    setLoading(true);
-    trySignInWithFacebook().then(status => {
-      if (status !== "success") setLoading(false);
-    });
-  }
   if (auth.loading || loading) return <ScreenLoader />;
   if (auth.isLoggedIn) return children;
   return (
@@ -84,9 +74,6 @@ function Authenticator({ auth, _handleAuth, _setLoading, children }) {
         </AuthButton>
         <AuthButton onPress={googlePress} icon="google" color="#4185f3">
           Sign in with Google
-        </AuthButton>
-        <AuthButton onPress={facebookPress} icon="facebook" color="#3a5998">
-          Sign in with Facebook
         </AuthButton>
         <Divider style={styles.divider} />
         <EmailForm

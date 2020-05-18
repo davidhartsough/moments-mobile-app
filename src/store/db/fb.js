@@ -19,7 +19,6 @@ export const auth = () => _auth;
 
 export const providers = {
   google: firebase.auth.GoogleAuthProvider,
-  facebook: firebase.auth.FacebookAuthProvider
 };
 
 export const setUID = uid => {

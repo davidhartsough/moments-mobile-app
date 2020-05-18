@@ -10,9 +10,6 @@
     "platforms": ["ios", "android"],
     "version": "0.1.0",
     "orientation": "portrait",
-    "facebookScheme": "fb524014968446692",
-    "facebookAppId": "524014968446692",
-    "facebookDisplayName": "Moments",
     "primaryColor": "#1471eb",
     "icon": "./assets/images/icon.png",
     "splash": {
