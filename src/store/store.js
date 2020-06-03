@@ -5,8 +5,8 @@ import { AsyncStorage } from "react-native";
 import rootReducer from "./reducers";
 
 const persistConfig = {
-  key: "root",
-  storage: AsyncStorage
+  key: "moments_root",
+  storage: AsyncStorage,
 };
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);
