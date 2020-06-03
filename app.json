@@ -35,7 +35,12 @@
     "android": {
       "package": "com.davidhartsough.moments",
       "versionCode": 1,
-      "icon": "./assets/images/icon.png",
+      "icon": "./assets/images/android-icon.png",
+      "adaptiveIcon": {
+        "backgroundColor": "#1471eb",
+        "foregroundImage": "./assets/images/foreground.png"
+      },
+      "playStoreUrl": "https://play.google.com/store/apps/details?id=com.davidhartsough.moments",
       "config": {
         "googleSignIn": {
           "apiKey": "",
